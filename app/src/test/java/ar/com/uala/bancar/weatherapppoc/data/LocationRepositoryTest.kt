@@ -8,12 +8,14 @@ import ar.com.uala.bancar.weatherapppoc.BaseTest
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import junit.framework.Assert.assertEquals
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Before
 import org.junit.Test
 import kotlin.time.ExperimentalTime
 
 
+@ExperimentalCoroutinesApi
 @ExperimentalTime
 class LocationRepositoryTest : BaseTest() {
 
