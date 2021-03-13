@@ -13,11 +13,11 @@ class WeatherRepository(
         const val YourCurrentLocation = "Your Current Location"
     }
 
-    fun getWeatherByName() = flow {
+    fun getWeatherByName(city: String) = flow {
 
         emit(WeatherState.Loading)
 
-        val weather = weatherService.searchByName("").run {
+        val weather = weatherService.searchByName(city).run {
             Weather(
                 city = name,
                 temp = main.temp

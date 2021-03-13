@@ -5,7 +5,9 @@ import android.app.AlertDialog
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
+import android.widget.RadioButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
@@ -143,6 +145,37 @@ class WeatherActivity : AppCompatActivity() {
             }
             else -> {
                 requestPermissionLauncher.launch(Manifest.permission.ACCESS_COARSE_LOCATION)
+            }
+        }
+    }
+
+    fun onRadioButtonClicked(view: View) {
+        if (view is RadioButton) {
+            // Is the button now checked?
+            val checked = view.isChecked
+
+            // Check which radio button was clicked
+            when (view.getId()) {
+                R.id.radio_montevideo ->
+                    if (checked) {
+                        weatherViewModel.getWeatherByName("Montevideo")
+                    }
+                R.id.radio_londres ->
+                    if (checked) {
+                        weatherViewModel.getWeatherByName("Londres")
+                    }
+                R.id.radio_san_pablo ->
+                    if (checked) {
+                        weatherViewModel.getWeatherByName("San Pabloe")
+                    }
+                R.id.radio_buenos_aires ->
+                    if (checked) {
+                        weatherViewModel.getWeatherByName("Buenos Aires")
+                    }
+                R.id.radio_munich ->
+                    if (checked) {
+                        weatherViewModel.getWeatherByName("Munich")
+                    }
             }
         }
     }

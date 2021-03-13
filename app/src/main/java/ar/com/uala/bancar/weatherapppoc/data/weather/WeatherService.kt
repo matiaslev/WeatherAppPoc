@@ -9,7 +9,7 @@ class WeatherService(
     private val weatherApi = retrofit.create(WeatherApi::class.java)
 
     suspend fun searchByName(name: String) = weatherApi.getByName(
-            name = "London",
+            name = name,
             token = "390535ae73e39302dcff3fbdebf4502b"
     )
 

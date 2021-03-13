@@ -51,6 +51,15 @@ class WeatherViewModel(
             .launchIn(viewModelScope)
     }
 
+    @ExperimentalCoroutinesApi
+    fun getWeatherByName(city: String) {
+        weatherRepository.getWeatherByName(city)
+                .onEach {
+                    _weatherState.value = it
+                }
+                .launchIn(viewModelScope)
+    }
+
     fun permissionGranted() {
         _permissionState.value = PermissionState.Granted
     }
