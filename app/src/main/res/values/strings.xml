@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">WeatherAppPoc</string>
     <string name="my_location_weather_button">My Weather</string>
+    <string name="weather_search_by_city_toggle">Search By Name</string>
 </resources>

@@ -6,11 +6,15 @@
     <Transition
         motion:constraintSetEnd="@+id/end"
         motion:constraintSetStart="@id/start"
-        motion:duration="1000">
+        motion:duration="1000"
+        motion:staggered="0.65">
         <OnSwipe
             motion:touchAnchorId="@+id/card_view"
             motion:touchAnchorSide="right"
             motion:dragDirection="dragDown" />
+        <OnClick
+            motion:targetId="@id/toggleSearchByName"
+            motion:clickAction="toggle" />
        <KeyFrameSet>
        </KeyFrameSet>
     </Transition>
