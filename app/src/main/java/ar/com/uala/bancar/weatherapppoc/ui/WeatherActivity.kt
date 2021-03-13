@@ -32,45 +32,64 @@ class WeatherActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.weather_layout)
 
+        title = "Weather"
+        stateChanges()
+
+        requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()
+        ) { isGranted: Boolean ->
+            if (isGranted) {
+                weatherViewModel.getLastKnownLocation()
+            } else {
+                weatherViewModel.permissionNotGranted()
+            }
+        }
+
+        findViewById<Button>(R.id.button).setOnClickListener {
+            getLastKnownLocationOrAskForCoarseLocationPermission()
+        }
+    }
+
+    private fun stateChanges() {
         weatherViewModel.locationState
-                .onEach {
-                    findViewById<TextView>(R.id.text).apply {
-                        text = when(it) {
-                            is LocationState.LastKnownLocation -> {
-                                "Lat: ${it.weatherLocation?.latitude} \n Long: ${it.weatherLocation?.longitude}"
-                            }
-                            LocationState.NotRequested -> {
-                                "Not Requested"
-                            }
-                            LocationState.RequestPermissions -> "Permissions Needed"
-                            LocationState.NotKnownLocation -> "We don't know"
+            .onEach {
+                findViewById<TextView>(R.id.text).apply {
+                    text = when(it) {
+                        is LocationState.LastKnownLocation -> {
+                            "Lat: ${it.weatherLocation?.latitude} \n Long: ${it.weatherLocation?.longitude}"
                         }
+                        LocationState.NotRequested -> {
+                            "Not Requested"
+                        }
+                        LocationState.RequestPermissions -> "Permissions Needed"
+                        LocationState.NotKnownLocation -> "We don't know"
                     }
                 }
-                .launchIn(lifecycleScope)
+            }
+            .launchIn(lifecycleScope)
 
         weatherViewModel.permissionState
-                .onEach {
-                    when(it) {
-                        PermissionState.NotGranted -> {
-                            findViewById<TextView>(R.id.text).text = "We need the permission dude"
-                        }
+            .onEach {
+                when(it) {
+                    PermissionState.NotGranted -> {
+                        findViewById<TextView>(R.id.text).text = "We need the permission dude"
+                    }
 
-                        PermissionState.Granted -> {
+                    PermissionState.Granted -> {
 
-                        }
+                    }
 
-                        PermissionState.NotAsked -> {
+                    PermissionState.NotAsked -> {
 
-                        }
                     }
                 }
-                .launchIn(lifecycleScope)
+            }
+            .launchIn(lifecycleScope)
 
         weatherViewModel.weatherState
             .onEach {
                 when(it) {
                     is WeatherState.Success -> {
+                        title = it.weather.city
                         Toast.makeText(this, "Temp: ${it.weather.temp}", Toast.LENGTH_SHORT).show()
                     }
                     is WeatherState.Error -> {
@@ -85,19 +104,6 @@ class WeatherActivity : AppCompatActivity() {
                 }
             }
             .launchIn(lifecycleScope)
-
-        requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()
-        ) { isGranted: Boolean ->
-            if (isGranted) {
-                weatherViewModel.getLastKnownLocation()
-            } else {
-                weatherViewModel.permissionNotGranted()
-            }
-        }
-
-        findViewById<Button>(R.id.button).setOnClickListener {
-            getLastKnownLocationOrAskForCoarseLocationPermission()
-        }
     }
 
     private fun getLastKnownLocationOrAskForCoarseLocationPermission() {

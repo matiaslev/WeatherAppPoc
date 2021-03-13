@@ -15,7 +15,8 @@ class WeatherRepository(
 
         val weather = weatherService.searchByName("").run {
             Weather(
-                    temp = main.temp
+                city = name,
+                temp = main.temp
             )
         }
         emit(WeatherState.Success(weather))
@@ -32,6 +33,7 @@ class WeatherRepository(
 
         val weather = weatherService.searchByLocation(latitude, longitude).run {
             Weather(
+                city = name,
                 temp = main.temp
             )
         }
