@@ -32,7 +32,7 @@ class WeatherActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.weather_layout)
 
-        title = "Weather"
+        title = "Find Your Weather"
         stateChanges()
 
         requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()
@@ -54,14 +54,15 @@ class WeatherActivity : AppCompatActivity() {
             .onEach {
                 findViewById<TextView>(R.id.text).apply {
                     text = when(it) {
-                        is LocationState.LastKnownLocation -> {
-                            "Lat: ${it.weatherLocation?.latitude} \n Long: ${it.weatherLocation?.longitude}"
-                        }
                         LocationState.NotRequested -> {
                             "Not Requested"
                         }
+
                         LocationState.RequestPermissions -> "Permissions Needed"
+
                         LocationState.NotKnownLocation -> "We don't know"
+
+                        else -> ""
                     }
                 }
             }
@@ -89,8 +90,9 @@ class WeatherActivity : AppCompatActivity() {
             .onEach {
                 when(it) {
                     is WeatherState.Success -> {
-                        title = it.weather.city
-                        Toast.makeText(this, "Temp: ${it.weather.temp}", Toast.LENGTH_SHORT).show()
+                        title = "Weather For ${it.weather.city}"
+
+                        findViewById<TextView>(R.id.text).text = "Temp: ${it.weather.temp}"
                     }
                     is WeatherState.Error -> {
                         Toast.makeText(this, "Error: ${it.exception.message}", Toast.LENGTH_SHORT).show()

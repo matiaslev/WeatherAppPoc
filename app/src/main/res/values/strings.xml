@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">WeatherAppPoc</string>
+    <string name="my_location_weather_button">My Weather</string>
 </resources>

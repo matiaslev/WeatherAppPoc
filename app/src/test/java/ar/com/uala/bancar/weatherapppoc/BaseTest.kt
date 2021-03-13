@@ -16,7 +16,7 @@ import org.junit.Rule
 abstract class BaseTest {
 
     companion object {
-        private const val EMPTY_STRING = ""
+        const val EmptyString = ""
 
         val weatherLocationMock = WeatherLocation(0.00, 0.00)
 
@@ -27,7 +27,7 @@ abstract class BaseTest {
         val weatherApiResponseMock = WeatherApiResponse(
             coord = Coord(0.00, 0.00),
             weatherResponseList = listOf(),
-            base = EMPTY_STRING,
+            base = EmptyString,
             main = Main(weatherMock.temp, 0.00, 0.00, 0.00, 0, 0),
             visibility = 0,
             wind = Wind(0.00, 0, 0.00),

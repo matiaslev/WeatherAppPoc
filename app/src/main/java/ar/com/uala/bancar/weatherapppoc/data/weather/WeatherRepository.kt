@@ -9,6 +9,10 @@ class WeatherRepository(
         private val weatherService: WeatherService
 ) {
 
+    companion object {
+        const val YourCurrentLocation = "Your Current Location"
+    }
+
     fun getWeatherByName() = flow {
 
         emit(WeatherState.Loading)
@@ -33,7 +37,7 @@ class WeatherRepository(
 
         val weather = weatherService.searchByLocation(latitude, longitude).run {
             Weather(
-                city = name,
+                city = if (name.isEmpty()) YourCurrentLocation else name,
                 temp = main.temp
             )
         }
