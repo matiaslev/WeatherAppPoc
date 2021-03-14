@@ -19,7 +19,7 @@ class LocationManager(
 
     private lateinit var locationCallback: LocationCallback
 
-    fun hasCoarseLocationPermission(): Boolean = ActivityCompat
+    fun notHasCoarseLocationPermission(): Boolean = ActivityCompat
         .checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) !=
         PackageManager.PERMISSION_GRANTED
 
@@ -33,15 +33,11 @@ class LocationManager(
         }
 
         focusedLocationProviderClient.lastLocation.addOnSuccessListener {
-            if (it != null) {
-                action(it)
-            } else {
-                /** TODO: In some cases the Location Could be Null, we could listen location updates
-                 * Documentation: https://developer.android.com/training/location/retrieve-current
-                 * */
-
-                // startLocationUpdates(locationCallback)
-            }
+            action(it)
+            /** TODO: In some cases the Location Could be Null, we could listen location updates
+             * Documentation: https://developer.android.com/training/location/retrieve-current
+             * */
+            // startLocationUpdates(locationCallback)
         }
     }
 

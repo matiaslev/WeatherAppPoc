@@ -58,6 +58,7 @@ class WeatherActivity : AppCompatActivity() {
         }
 
         findViewById<Button>(R.id.button).setOnClickListener {
+            weatherViewModel.locationProcessing()
             getLastKnownLocationOrAskForCoarseLocationPermission()
         }
     }
@@ -65,15 +66,25 @@ class WeatherActivity : AppCompatActivity() {
     private fun stateChanges() {
         weatherViewModel.locationState
             .onEach {
-                findViewById<TextView>(R.id.temp).apply {
-                    text = when(it) {
-                        LocationState.NotRequested -> getString(R.string.request_your_weather)
+                when(it) {
+                    LocationState.NotRequested -> {
+                        findViewById<TextView>(R.id.temp).text = getString(R.string.request_your_weather)
+                    }
 
-                        LocationState.RequestPermissions -> getString(R.string.request_location_permissions)
+                    LocationState.RequestPermissions -> {
+                        getLastKnownLocationOrAskForCoarseLocationPermission()
+                    }
 
-                        LocationState.NotKnownLocation -> getString(R.string.cant_get_location)
+                    LocationState.NotKnownLocation -> {
+                        findViewById<Button>(R.id.button).text = getString(R.string.cant_get_location)
+                    }
 
-                        else -> ""
+                    LocationState.Processing -> {
+                        findViewById<Button>(R.id.button).text = getString(R.string.my_location_weather_button)
+                    }
+
+                    is LocationState.LastKnownLocation -> {
+                        // Not Propagated, the weather service it's called in the view model
                     }
                 }
             }
@@ -83,7 +94,8 @@ class WeatherActivity : AppCompatActivity() {
             .onEach {
                 when(it) {
                     PermissionState.NotGranted -> {
-                        findViewById<TextView>(R.id.temp).text = getString(R.string.request_location_permissions)
+                        Toast.makeText(this, getString(R.string.request_location_permissions), Toast.LENGTH_LONG)
+                                .show()
                     }
 
                     PermissionState.Granted -> {
@@ -144,24 +156,17 @@ class WeatherActivity : AppCompatActivity() {
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
                     shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_COARSE_LOCATION) -> {
 
-                val alertDialog: AlertDialog? = this.let {
-                    val builder = AlertDialog.Builder(this)
-                    builder.apply {
-                        setPositiveButton(OkDialogButtonText) { dialog, id ->
-                            requestPermissionLauncher.launch(Manifest.permission.ACCESS_COARSE_LOCATION)
-                        }
-                        setNegativeButton(CancelDialogButtonText) { dialog, id ->
-                            weatherViewModel.permissionNotGranted()
-                        }
+                AlertDialog.Builder(this).apply {
+                    setMessage(R.string.rationale_dialog_message)
+
+                    setPositiveButton(OkDialogButtonText) { dialog, id ->
+                        requestPermissionLauncher.launch(Manifest.permission.ACCESS_COARSE_LOCATION)
                     }
-                    // Set other dialog properties
 
-
-                    // Create the AlertDialog
-                    builder.create()
-                }
-
-                alertDialog?.show()
+                    setNegativeButton(CancelDialogButtonText) { dialog, id ->
+                        weatherViewModel.permissionNotGranted()
+                    }
+                }.create().show()
 
             }
             else -> {

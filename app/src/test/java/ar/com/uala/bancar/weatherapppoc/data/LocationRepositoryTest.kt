@@ -33,7 +33,7 @@ class LocationRepositoryTest : BaseTest() {
     fun `if not have coarse location permission should offer the RequestPermissions state`() = runBlockingTest {
 
         // Arrange
-        every { locationManager.hasCoarseLocationPermission() } returns true
+        every { locationManager.notHasCoarseLocationPermission() } returns true
 
         // Act
         val flow = locationRepository.getLastKnownLocation()
@@ -49,7 +49,7 @@ class LocationRepositoryTest : BaseTest() {
     fun `if have coarse location permission should not offer the RequestPermissions state`() = runBlockingTest {
 
         // Arrange
-        every { locationManager.hasCoarseLocationPermission() } returns false
+        every { locationManager.notHasCoarseLocationPermission() } returns false
 
         // Act
         val flow = locationRepository.getLastKnownLocation()

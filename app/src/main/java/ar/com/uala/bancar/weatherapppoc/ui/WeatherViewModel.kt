@@ -43,6 +43,7 @@ class WeatherViewModel(
 
                     LocationState.NotKnownLocation,
                     LocationState.NotRequested,
+                    LocationState.Processing,
                     LocationState.RequestPermissions -> {
                         _locationState.value = it
                     }
@@ -66,6 +67,10 @@ class WeatherViewModel(
 
     fun permissionNotGranted() {
         _permissionState.value = PermissionState.NotGranted
+    }
+
+    fun locationProcessing() {
+        _locationState.value = LocationState.Processing
     }
 
 }

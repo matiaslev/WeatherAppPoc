@@ -15,7 +15,7 @@ class LocationRepository(
 
     @SuppressLint("MissingPermission") // Contemplated inside hasCoarseLocationPermission
     fun getLastKnownLocation() = callbackFlow {
-        if (locationManager.hasCoarseLocationPermission()) {
+        if (locationManager.notHasCoarseLocationPermission()) {
             offer(LocationState.RequestPermissions)
         }
 
