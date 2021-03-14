@@ -8,4 +8,7 @@
     <string name="wind_speed">Wind Speed: %1$s</string>
     <string name="city_title">Weather For %1$s</string>
     <string name="drag_left_right_weather_land">Click the Card</string>
+    <string name="request_your_weather">where would you like to know the weather from?</string>
+    <string name="request_location_permissions">We need location permissions for give you the weather for where you are</string>
+    <string name="cant_get_location">Open Google Maps and came back xD</string>
 </resources>

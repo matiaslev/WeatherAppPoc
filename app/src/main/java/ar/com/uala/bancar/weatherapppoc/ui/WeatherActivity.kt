@@ -67,13 +67,11 @@ class WeatherActivity : AppCompatActivity() {
             .onEach {
                 findViewById<TextView>(R.id.temp).apply {
                     text = when(it) {
-                        LocationState.NotRequested -> {
-                            "Not Requested"
-                        }
+                        LocationState.NotRequested -> getString(R.string.request_your_weather)
 
-                        LocationState.RequestPermissions -> "Permissions Needed"
+                        LocationState.RequestPermissions -> getString(R.string.request_location_permissions)
 
-                        LocationState.NotKnownLocation -> "We don't know"
+                        LocationState.NotKnownLocation -> getString(R.string.cant_get_location)
 
                         else -> ""
                     }
@@ -85,7 +83,7 @@ class WeatherActivity : AppCompatActivity() {
             .onEach {
                 when(it) {
                     PermissionState.NotGranted -> {
-                        findViewById<TextView>(R.id.temp).text = "We need the permission dude"
+                        findViewById<TextView>(R.id.temp).text = getString(R.string.request_location_permissions)
                     }
 
                     PermissionState.Granted -> {

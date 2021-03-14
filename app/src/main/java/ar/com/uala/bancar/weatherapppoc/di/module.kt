@@ -1,5 +1,6 @@
 package ar.com.uala.bancar.weatherapppoc.di
 
+import android.os.Build
 import com.google.android.gms.location.LocationServices
 import ar.com.uala.bancar.weatherapppoc.data.location.LocationManager
 import ar.com.uala.bancar.weatherapppoc.data.location.LocationRepository
@@ -33,9 +34,16 @@ val appModule = module {
 fun provideRetrofit(
         // Potential dependencies of this type
 ): Retrofit {
-    return Retrofit.Builder()
-            .client(createHttpClient())
+    val retrofitBuilder =  Retrofit.Builder()
+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        retrofitBuilder.client(createHttpClient())
             .baseUrl("https://api.openweathermap.org/data/2.5/")
+    } else {
+        retrofitBuilder.baseUrl("http://api.openweathermap.org/data/2.5/")
+    }
+
+    return retrofitBuilder
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 }
