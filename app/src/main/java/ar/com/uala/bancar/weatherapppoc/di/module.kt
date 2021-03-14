@@ -1,4 +1,4 @@
-package com.matiaslev.astropaypoc.di
+package ar.com.uala.bancar.weatherapppoc.di
 
 import com.google.android.gms.location.LocationServices
 import ar.com.uala.bancar.weatherapppoc.data.location.LocationManager

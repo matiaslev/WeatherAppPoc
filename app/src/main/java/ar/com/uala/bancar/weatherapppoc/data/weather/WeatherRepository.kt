@@ -11,6 +11,8 @@ class WeatherRepository(
 
     companion object {
         const val YourCurrentLocation = "Your Current Location"
+        const val WeatherIconUrlBeforeIcon = "https://openweathermap.org/img/wn/"
+        const val WeatherIconAfterIcon = "@4x.png"
     }
 
     fun getWeatherByName(city: String) = flow {
@@ -20,7 +22,12 @@ class WeatherRepository(
         val weather = weatherService.searchByName(city).run {
             Weather(
                 city = name,
-                temp = main.temp
+                temp = main.temp,
+                tempMin = main.tempMin,
+                tempMax = main.tempMax,
+                tempFeeling = main.feelsLike,
+                image = WeatherIconUrlBeforeIcon + weatherResponseList.first().icon + WeatherIconAfterIcon,
+                windSpeed = wind.speed.toString()
             )
         }
         emit(WeatherState.Success(weather))
@@ -38,7 +45,12 @@ class WeatherRepository(
         val weather = weatherService.searchByLocation(latitude, longitude).run {
             Weather(
                 city = if (name.isEmpty()) YourCurrentLocation else name,
-                temp = main.temp
+                temp = main.temp,
+                tempMin = main.tempMin,
+                tempMax = main.tempMax,
+                tempFeeling = main.feelsLike,
+                image = WeatherIconUrlBeforeIcon + weatherResponseList.first().icon + WeatherIconAfterIcon,
+                windSpeed = wind.speed.toString()
             )
         }
         emit(WeatherState.Success(weather))

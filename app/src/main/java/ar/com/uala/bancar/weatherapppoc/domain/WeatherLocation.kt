@@ -1,4 +1,4 @@
-package com.matiaslev.astropaypoc.domain
+package ar.com.uala.bancar.weatherapppoc.domain
 
 data class WeatherLocation(
     val latitude: Double,

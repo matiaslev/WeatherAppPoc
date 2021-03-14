@@ -6,10 +6,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
-import android.widget.RadioButton
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -19,6 +16,7 @@ import ar.com.uala.bancar.weatherapppoc.R
 import ar.com.uala.bancar.weatherapppoc.domain.LocationState
 import ar.com.uala.bancar.weatherapppoc.domain.PermissionState
 import ar.com.uala.bancar.weatherapppoc.domain.WeatherState
+import coil.load
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -27,6 +25,19 @@ import org.koin.android.viewmodel.ext.android.viewModel
 @ExperimentalCoroutinesApi
 class WeatherActivity : AppCompatActivity() {
 
+    companion object {
+        const val DefaultTitle = "Find Your Weather"
+        const val OkDialogButtonText = "OK"
+        const val CancelDialogButtonText = "Cancel"
+
+        // Cities
+        const val Montevideo = "Montevideo"
+        const val London = "London"
+        const val SanPablo = "San Pablo"
+        const val BuenosAires = "Buenos Aires"
+        const val Munich = "Munich"
+    }
+
     val weatherViewModel: WeatherViewModel by viewModel()
     lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
 
@@ -34,7 +45,7 @@ class WeatherActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.weather_layout)
 
-        title = "Find Your Weather"
+        title = DefaultTitle
         stateChanges()
 
         requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()
@@ -54,7 +65,7 @@ class WeatherActivity : AppCompatActivity() {
     private fun stateChanges() {
         weatherViewModel.locationState
             .onEach {
-                findViewById<TextView>(R.id.text).apply {
+                findViewById<TextView>(R.id.temp).apply {
                     text = when(it) {
                         LocationState.NotRequested -> {
                             "Not Requested"
@@ -74,7 +85,7 @@ class WeatherActivity : AppCompatActivity() {
             .onEach {
                 when(it) {
                     PermissionState.NotGranted -> {
-                        findViewById<TextView>(R.id.text).text = "We need the permission dude"
+                        findViewById<TextView>(R.id.temp).text = "We need the permission dude"
                     }
 
                     PermissionState.Granted -> {
@@ -92,9 +103,21 @@ class WeatherActivity : AppCompatActivity() {
             .onEach {
                 when(it) {
                     is WeatherState.Success -> {
-                        title = "Weather For ${it.weather.city}"
+                        title = getString(R.string.city_title, it.weather.city)
 
-                        findViewById<TextView>(R.id.text).text = "Temp: ${it.weather.temp}"
+                        findViewById<ImageView>(R.id.weather_image).load(it.weather.image)
+
+                        findViewById<TextView>(R.id.temp).text = resources
+                            .getString(R.string.current_temp, it.weather.temp.toString())
+
+                        findViewById<TextView>(R.id.temp_min).text = resources
+                            .getString(R.string.min_temp, it.weather.tempMin.toString())
+
+                        findViewById<TextView>(R.id.temp_max).text = resources
+                            .getString(R.string.max_temp, it.weather.tempMax.toString())
+
+                        findViewById<TextView>(R.id.wind).text = resources
+                            .getString(R.string.wind_speed, it.weather.windSpeed)
                     }
                     is WeatherState.Error -> {
                         Toast.makeText(this, "Error: ${it.exception.message}", Toast.LENGTH_SHORT).show()
@@ -126,10 +149,10 @@ class WeatherActivity : AppCompatActivity() {
                 val alertDialog: AlertDialog? = this.let {
                     val builder = AlertDialog.Builder(this)
                     builder.apply {
-                        setPositiveButton("ok") { dialog, id ->
+                        setPositiveButton(OkDialogButtonText) { dialog, id ->
                             requestPermissionLauncher.launch(Manifest.permission.ACCESS_COARSE_LOCATION)
                         }
-                        setNegativeButton("cancel") { dialog, id ->
+                        setNegativeButton(CancelDialogButtonText) { dialog, id ->
                             weatherViewModel.permissionNotGranted()
                         }
                     }
@@ -158,23 +181,23 @@ class WeatherActivity : AppCompatActivity() {
             when (view.getId()) {
                 R.id.radio_montevideo ->
                     if (checked) {
-                        weatherViewModel.getWeatherByName("Montevideo")
+                        weatherViewModel.getWeatherByName(Montevideo)
                     }
                 R.id.radio_londres ->
                     if (checked) {
-                        weatherViewModel.getWeatherByName("Londres")
+                        weatherViewModel.getWeatherByName(London)
                     }
                 R.id.radio_san_pablo ->
                     if (checked) {
-                        weatherViewModel.getWeatherByName("San Pabloe")
+                        weatherViewModel.getWeatherByName(SanPablo)
                     }
                 R.id.radio_buenos_aires ->
                     if (checked) {
-                        weatherViewModel.getWeatherByName("Buenos Aires")
+                        weatherViewModel.getWeatherByName(BuenosAires)
                     }
                 R.id.radio_munich ->
                     if (checked) {
-                        weatherViewModel.getWeatherByName("Munich")
+                        weatherViewModel.getWeatherByName(Munich)
                     }
             }
         }

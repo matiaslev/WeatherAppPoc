@@ -1,8 +1,10 @@
 package ar.com.uala.bancar.weatherapppoc.data.weather
 
+import com.google.gson.annotations.SerializedName
+
 data class WeatherApiResponse (
         val coord: Coord,
-        val weatherResponseList: List<WeatherResponse>,
+        @SerializedName("weather") val weatherResponseList: List<WeatherResponse>,
         val base: String,
         val main: Main,
         val visibility: Long,
@@ -27,9 +29,9 @@ data class Coord (
 
 data class Main (
         val temp: Double,
-        val feelsLike: Double,
-        val tempMin: Double,
-        val tempMax: Double,
+        @SerializedName("feels_like") val feelsLike: Double,
+        @SerializedName("temp_min") val tempMin: Double,
+        @SerializedName("temp_max")val tempMax: Double,
         val pressure: Long,
         val humidity: Long
 )

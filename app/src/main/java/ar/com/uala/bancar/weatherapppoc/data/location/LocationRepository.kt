@@ -2,7 +2,7 @@ package ar.com.uala.bancar.weatherapppoc.data.location
 
 import android.annotation.SuppressLint
 import ar.com.uala.bancar.weatherapppoc.domain.LocationState
-import com.matiaslev.astropaypoc.domain.WeatherLocation
+import ar.com.uala.bancar.weatherapppoc.domain.WeatherLocation
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.awaitClose

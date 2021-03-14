@@ -1,5 +1,10 @@
 <resources>
     <string name="app_name">WeatherAppPoc</string>
     <string name="my_location_weather_button">My Weather</string>
-    <string name="weather_search_by_city_toggle">Search By Name</string>
+    <string name="weather_search_by_city_toggle">Drag the Card or Click Me for see the cities</string>
+    <string name="current_temp">Now: %1$s °C</string>
+    <string name="min_temp">Min: %1$s °C</string>
+    <string name="max_temp">Max: %1$s °C</string>
+    <string name="wind_speed">Wind Speed: %1$s</string>
+    <string name="city_title">Weather For %1$s</string>
 </resources>
