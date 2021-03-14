@@ -11,4 +11,6 @@
     <string name="request_your_weather">where would you like to know the weather from?</string>
     <string name="request_location_permissions">We need location permissions for give you the weather for where you are</string>
     <string name="cant_get_location">Open Google Maps and came back xD</string>
+    <string name="loading_toast_text">Loading</string>
+    <string name="error_toast_text">Ups! Try again Please</string>
 </resources>

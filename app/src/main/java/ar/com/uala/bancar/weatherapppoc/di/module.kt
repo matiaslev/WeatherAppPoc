@@ -31,6 +31,10 @@ val appModule = module {
 
 }
 
+// TODO: Should be in the Gradle File to support different ones by Variant (debug, release, etc)
+const val HttpUrl = "http://api.openweathermap.org/data/2.5/"
+const val HttpsUrl = "https://api.openweathermap.org/data/2.5/"
+
 fun provideRetrofit(
         // Potential dependencies of this type
 ): Retrofit {
@@ -38,9 +42,9 @@ fun provideRetrofit(
 
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
         retrofitBuilder.client(createHttpClient())
-            .baseUrl("https://api.openweathermap.org/data/2.5/")
+            .baseUrl(HttpsUrl)
     } else {
-        retrofitBuilder.baseUrl("http://api.openweathermap.org/data/2.5/")
+        retrofitBuilder.baseUrl(HttpUrl)
     }
 
     return retrofitBuilder

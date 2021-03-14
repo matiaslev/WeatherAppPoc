@@ -118,10 +118,10 @@ class WeatherActivity : AppCompatActivity() {
                             .getString(R.string.wind_speed, it.weather.windSpeed)
                     }
                     is WeatherState.Error -> {
-                        Toast.makeText(this, "Error: ${it.exception.message}", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, getString(R.string.error_toast_text), Toast.LENGTH_SHORT).show()
                     }
                     WeatherState.Loading -> {
-                        Toast.makeText(this, "Loading", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, getString(R.string.loading_toast_text), Toast.LENGTH_SHORT).show()
                     }
                     WeatherState.NotInitialized -> {
 
