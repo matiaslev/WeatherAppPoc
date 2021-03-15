@@ -10,4 +10,5 @@
 
 ### To Improve
 
-I should use UI components and not Toasts to represent state changes, because state is recreated in changes like orientation and dark mode and sent Toast again looks strange.
+* I should use UI components and not Toasts to represent state changes, because state is recreated in changes like orientation and dark mode and sent Toast again looks strange.
+* If the last location is unknown, I am not requesting it
