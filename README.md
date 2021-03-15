@@ -7,3 +7,7 @@
 ### Landscape
 
 ![Landscape](https://user-images.githubusercontent.com/39838885/111092373-adffe180-8514-11eb-9f5b-a8ba4f5c1acb.gif)
+
+### To Improve
+
+I should use UI components and not Toasts to represent state changes, because state is recreated in changes like orientation and dark mode and sent Toast again looks strange.
