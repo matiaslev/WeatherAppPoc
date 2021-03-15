@@ -19,6 +19,7 @@ abstract class BaseTest {
 
     companion object {
         const val EmptyString = ""
+        const val WeatherIcon = "image.png"
 
         val weatherLocationMock = WeatherLocation(0.00, 0.00)
 
@@ -28,12 +29,12 @@ abstract class BaseTest {
             tempMin = 10.00,
             tempMax = 40.00,
             tempFeeling = 32.00,
-            image = WeatherIconUrlBeforeIcon +"image.png" + WeatherIconAfterIcon,
+            image = WeatherIconUrlBeforeIcon + WeatherIcon + WeatherIconAfterIcon,
             windSpeed = "100.0"
         )
         val weatherApiResponseMock = WeatherApiResponse(
             coord = Coord(0.00, 0.00),
-            weatherResponseList = listOf(WeatherResponse(1, EmptyString, EmptyString, "image.png")),
+            weatherResponseList = listOf(WeatherResponse(1, EmptyString, EmptyString, WeatherIcon)),
             base = EmptyString,
             main = Main(weatherMock.temp, weatherMock.tempFeeling, weatherMock.tempMin, weatherMock.tempMax, 0, 0),
             visibility = 0,

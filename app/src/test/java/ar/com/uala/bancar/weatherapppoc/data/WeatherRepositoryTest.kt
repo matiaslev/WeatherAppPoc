@@ -55,7 +55,7 @@ class WeatherRepositoryTest : BaseTest() {
     }
 
     @Test
-    fun `getWeatherByLocation shoul return "Your Current Location" as name when is empty`() = runBlockingTest {
+    fun `getWeatherByLocation should return Your Current Location as name when is empty`() = runBlockingTest {
         // Arrange
         coEvery {
             weatherService.searchByLocation(
@@ -76,6 +76,67 @@ class WeatherRepositoryTest : BaseTest() {
         flow.test {
             assertEquals(WeatherState.Loading, expectItem())
             assert((expectItem() as WeatherState.Success).weather.city == YourCurrentLocation)
+            expectComplete()
+        }
+
+    }
+
+    @Test
+    fun `getWeatherByLocation should return url as image for icon`() = runBlockingTest {
+        // Arrange
+        coEvery {
+            weatherService.searchByLocation(
+                    weatherLocationMock.latitude.toString(),
+                    weatherLocationMock.longitude.toString()
+            )
+        } returns weatherApiResponseMock
+
+        // Act
+        val flow = weatherRepository.getWeatherByLocation(
+                weatherLocationMock.latitude.toString(),
+                weatherLocationMock.longitude.toString()
+        )
+
+        // Assert
+        flow.test {
+            assertEquals(WeatherState.Loading, expectItem())
+            assert((expectItem() as WeatherState.Success).weather.image ==
+                    WeatherRepository.WeatherIconUrlBeforeIcon + WeatherIcon + WeatherRepository.WeatherIconAfterIcon)
+            expectComplete()
+        }
+
+    }
+
+    @Test
+    fun `getWeatherByName should call searchByName and propagate WeatherState`() = runBlockingTest {
+        // Arrange
+        coEvery { weatherService.searchByName(EmptyString) } returns weatherApiResponseMock
+
+        // Act
+        val flow = weatherRepository.getWeatherByName(EmptyString)
+
+        // Assert
+        flow.test {
+            assertEquals(WeatherState.Loading, expectItem())
+            assertEquals(WeatherState.Success(weatherMock), expectItem())
+            expectComplete()
+        }
+
+    }
+
+    @Test
+    fun `getWeatherByName should return url as image for icon`() = runBlockingTest {
+        // Arrange
+        coEvery { weatherService.searchByName(EmptyString) } returns weatherApiResponseMock
+
+        // Act
+        val flow = weatherRepository.getWeatherByName(EmptyString)
+
+        // Assert
+        flow.test {
+            assertEquals(WeatherState.Loading, expectItem())
+            assert((expectItem() as WeatherState.Success).weather.image ==
+                    WeatherRepository.WeatherIconUrlBeforeIcon + WeatherIcon + WeatherRepository.WeatherIconAfterIcon)
             expectComplete()
         }
 
